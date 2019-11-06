@@ -9,44 +9,51 @@ import './app.css';
 
 export default class App extends Component {
 
-  state = {
-    showRandomPlanet: true
-  };
+	state = {
+		showRandomPlanet: true,
+		selectorPerson: null
+	};
 
-  toggleRandomPlanet = () => {
-    this.setState((state) => {
-      return {
-        showRandomPlanet: !state.showRandomPlanet
-      }
-    });
-  };
+	toggleRandomPlanet = () => {
+		this.setState((state) => {
+			return {
+				showRandomPlanet: !state.showRandomPlanet
+			}
+		});
+	};
 
-  render() {
+	onPersonSelected = (id) => {
+		this.setState({
+			selectorPerson: id
+		});
+	}
 
-    const planet = this.state.showRandomPlanet ?
-      <RandomPlanet/> :
-      null;
+	render() {
 
-    return (
-      <div className="stardb-app">
-        <Header />
-        { planet }
+		const {selectorPerson} = this.state;
+		
+		const planet = this.state.showRandomPlanet ? <RandomPlanet /> : null;
 
-        <button
-          className="toggle-planet btn btn-warning btn-lg"
-          onClick={this.toggleRandomPlanet}>
-          Toggle Random Planet
+		return (
+			<div className="stardb-app">
+				<Header />
+				{planet}
+
+				<button
+					className="toggle-planet btn btn-warning btn-lg"
+					onClick={this.toggleRandomPlanet}>
+					Toggle Random Planet
         </button>
 
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails />
-          </div>
-        </div>
-      </div>
-    );
-  }
+				<div className="row mb2">
+					<div className="col-md-6">
+						<ItemList onItemSelected = {this.onPersonSelected} />
+					</div>
+					<div className="col-md-6">
+						<PersonDetails personId = {selectorPerson} />
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
